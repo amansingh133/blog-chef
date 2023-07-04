@@ -9,6 +9,8 @@ import compression from "compression";
 import home from "./routes/home/index.js";
 import admin from "./routes/admin/index.js";
 import api from "./routes/api/index.js";
+import connectToDb from "./db/index.js";
+import { error } from "console";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -47,4 +49,11 @@ app.use("/", home);
 app.use("/admin", admin);
 app.use("/api", api);
 
-app.listen(8080, () => console.log("Server running on port:8080"));
+Promise.all([connectToDb])
+  .then(() =>
+    app.listen(8080, () => console.log("Server running on port:8080"))
+  )
+  .catch((error) => {
+    console.error(`MongoDB Atlas Error : ${error}`);
+    process.exit();
+  });
