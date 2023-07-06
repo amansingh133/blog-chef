@@ -1,10 +1,12 @@
-export default (req, res) => {
-  const posts = [
-    { id: 1, title: "First Post" },
-    { id: 2, title: "Second Post" },
-  ];
+import { getAllPosts } from "../../controllers/post.js";
+// import { cacheContent } from "../../controllers/cache.js";
 
-  res.json({
-    posts,
-  });
+export default async (req, res) => {
+  try {
+    const posts = await getAllPosts();
+    // cacheContent("all-posts", posts);
+    res.json({ posts });
+  } catch (error) {
+    res.status(404).json(error);
+  }
 };

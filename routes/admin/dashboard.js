@@ -1,12 +1,17 @@
-export default (req, res) => {
-  res.render("dashboard", {
-    user: req.session.user,
-    posts: [
-      {
-        id: 1,
-        title: "I love express router",
-        content: "Express is fun, isn't it?",
-      },
-    ],
-  });
+import moment from "moment";
+import { getFlaggedPosts } from "../../controllers/post.js";
+
+export default async (req, res) => {
+  try {
+    const getPosts = await getFlaggedPosts();
+    res.render("dashboard", {
+      user: req.session.user.name,
+      lastLoggedIn: moment(req.session.user.lastLoggedIn).format(
+        "MMMM, Do YYYY, h:mm:ss a"
+      ),
+      posts: getPosts,
+    });
+  } catch (error) {
+    res.send("There was an error rendering the page!");
+  }
 };

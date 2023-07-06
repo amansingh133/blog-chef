@@ -3,5 +3,5 @@ export default (req, res) => {
     return res.redirect("/admin/dashboard");
   }
 
-  res.redirect("/admin/dashboard");
+  res.redirect("/admin/login");
 };

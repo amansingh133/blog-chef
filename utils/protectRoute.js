@@ -1,11 +1,17 @@
+import { verifyUser } from "../controllers/user.js";
+
 const protectRoute =
   (redirectTo = "/") =>
-  (req, res, next) => {
-    if (req.session.user) {
-      return next();
-    }
+  async (req, res, next) => {
+    try {
+      if (req.session.user && (await verifyUser(req.session.user.email))) {
+        return next();
+      }
 
-    return res.redirect(redirectTo);
+      res.redirect(redirectTo);
+    } catch (error) {
+      res.redirect(redirectTo);
+    }
   };
 
 export default protectRoute;

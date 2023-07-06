@@ -1,4 +1,11 @@
-export default (req, res) => {
-  const { name, email, password } = req.body;
-  res.json({ status: true });
+import { signUpUser } from "../../controllers/user.js";
+
+export default async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    const { user, token } = await signUpUser({ name, email, password });
+    res.json({ user, token });
+  } catch (error) {
+    res.status(403).json(error);
+  }
 };

@@ -1,0 +1,12 @@
+import { signUpAdmin } from "../../controllers/user.js";
+
+export default async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    await signUpAdmin({ name, email, password });
+    res.redirect("/admin/login");
+  } catch (error) {
+    console.log(error);
+    res.redirect("/admin/signup");
+  }
+};

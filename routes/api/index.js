@@ -1,23 +1,29 @@
 import { Router } from "express";
 import getPosts from "./get-posts.js";
+import storePost from "./store-post.js";
 import loginUser from "./login-user.js";
 import signUpUser from "./signUp-user.js";
 import getPost from "./get-post.js";
-import storePost from "./store-post.js";
 import deletePost from "./delete-post.js";
 import catchAll from "./catch-all.js";
 import protectApi from "../../utils/protectApi.js";
+import verify from "./verify.js";
+// import {
+//   servePostsFromCache,
+//   servePostFromCache,
+// } from "../../controllers/cache.js";
 
 const router = Router();
 
-router.get("/posts", getPosts);
+router.get("/posts", getPosts); //servePostFromCache(),
 router
   .route("/post/:postId?")
-  .get(getPost)
+  .get(getPost) //include servePostFromCache() before getPost
   .post(protectApi, storePost)
   .delete(protectApi, deletePost);
-router.get("/login", loginUser);
-router.get("signup", signUpUser);
+router.post("/login", loginUser);
+router.post("/signup", signUpUser);
+router.post("/verify", verify);
 router.use(catchAll);
 
 export default router;

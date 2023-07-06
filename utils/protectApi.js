@@ -1,11 +1,17 @@
-const protectApi = (req, res, next) => {
-  const authorization = req.header("Authorization");
-  if (authorization) {
-    // Verify the JWT token here
-    return next();
-  }
+import { verifyToken } from "../controllers/user.js";
 
-  res.status(403).json({ message: "Unauthorized access" });
+const protectApi = async (req, res, next) => {
+  try {
+    let authorization = req.header("Authorization");
+    if (authorization) {
+      // verify
+      const token = authorization.split(" ")[1];
+      await verifyToken(token);
+      return next();
+    }
+  } catch (error) {
+    res.status(403).json({ message: "Unauthorized access" });
+  }
 };
 
 export default protectApi;
