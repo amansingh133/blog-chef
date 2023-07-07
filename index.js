@@ -13,6 +13,7 @@ import admin from "./routes/admin/index.js";
 import api from "./routes/api/index.js";
 import connectToDb from "./db/index.js";
 import session from "./session/index.js";
+import helmet from "helmet";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -28,6 +29,7 @@ const logStream = rfs.createStream("blogChef.log", {
 });
 
 // app.use(morgan(":method - :url - :date - :response-time ms"));
+app.use(helmet());
 app.use(compression());
 app.use(
   morgan(":method  - :url - :date - :response-time ms", {

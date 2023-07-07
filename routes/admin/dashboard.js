@@ -10,6 +10,7 @@ export default async (req, res) => {
         "MMMM, Do YYYY, h:mm:ss a"
       ),
       posts: getPosts,
+      csrfToken: req.csrfToken(),
     });
   } catch (error) {
     res.send("There was an error rendering the page!");
